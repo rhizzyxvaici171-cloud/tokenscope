@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TokenScope — JWT Decoder & Vulnerability Inspector</title>
+<meta name="description" content="Decode a JWT and check it for common security issues like alg:none, missing expiry, and weak signing algorithms — entirely in your browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">⬡</span>
+      <span class="brand-name">TokenScope</span>
+    </div>
+    <p class="tagline">Paste a JWT to see exactly what it contains — and whether it's carrying any well-known security red flags.</p>
+  </header>
+
+  <main class="panel">
+    <label for="tokenInput" class="field-label">Paste a JWT</label>
+    <textarea id="tokenInput" rows="4" spellcheck="false" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...."></textarea>
+    <div class="input-hint" id="inputHint">Nothing is sent anywhere — decoding happens entirely in your browser.</div>
+
+    <div id="output" class="output" hidden>
+
+      <section class="block">
+        <h2 class="block-title">Header</h2>
+        <pre class="code-block" id="headerJson"></pre>
+      </section>
+
+      <section class="block">
+        <h2 class="block-title">Payload</h2>
+        <pre class="code-block" id="payloadJson"></pre>
+        <div class="claims" id="claimsList"></div>
+      </section>
+
+      <section class="block">
+        <h2 class="block-title">Signature</h2>
+        <p class="signature-note">The signature is shown below but <strong>cannot be verified</strong> in the browser — that requires the secret key or public key, which should never be exposed client-side. Decoding a token is not the same as verifying it.</p>
+        <pre class="code-block signature-block" id="signatureRaw"></pre>
+      </section>
+
+      <section class="block">
+        <h2 class="block-title">Security checks</h2>
+        <ul class="findings" id="findings"></ul>
+      </section>
+
+    </div>
+
+    <div id="errorBox" class="error-box" hidden></div>
+  </main>
+
+  <section class="about">
+    <h2>What this checks for</h2>
+    <ul class="about-list">
+      <li><strong>alg: none</strong> — a critical, well-documented JWT vulnerability where a server accepts unsigned tokens if it doesn't strictly validate the algorithm.</li>
+      <li><strong>Missing or long-lived expiry</strong> — tokens with no <code>exp</code> claim, or an expiry far in the future, widen the window an attacker can use a stolen token.</li>
+      <li><strong>Weak or unusual algorithms</strong> — flags algorithms known for implementation pitfalls, like HS256/RS256 confusion attacks.</li>
+      <li><strong>Expired tokens</strong> — tells you plainly whether the token is currently valid by time, though this app has no way to check server-side revocation.</li>
+    </ul>
+  </section>
+
+  <footer class="site-footer">
+    <p>Open source on <a href="#" id="repoLink">GitHub</a> · Plain HTML, CSS and JS — no frameworks, no backend, no network calls.</p>
+  </footer>
+
+</div>
+<script src="script.js"></script>
+</body>
+</html>
