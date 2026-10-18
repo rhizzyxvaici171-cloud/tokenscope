@@ -2,7 +2,7 @@
 
 A framework-free web app that decodes a JSON Web Token (JWT) and flags common, well-documented security issues — entirely in the browser, with no network calls at all.
 
-**[Live demo](https://github.com/rhizzyxvaici171-cloud.io/tokenscope)**
+**[Live demo](https://github.com/rhizzyxvaici171-cloud.io/tokenscope/)**
 
 ## What it does
 
